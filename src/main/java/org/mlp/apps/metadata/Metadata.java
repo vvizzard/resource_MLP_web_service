@@ -1,5 +1,6 @@
 package org.mlp.apps.metadata;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -7,9 +8,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.mlp.apps.association.AssociationMetadataTaxonomi;
+import org.mlp.apps.association.AssociationMetadataTopic;
 import org.mlp.apps.base.BaseEntity;
 import org.mlp.apps.photo.Photo;
 
@@ -93,6 +97,35 @@ public class Metadata extends BaseEntity {
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<Photo> photos = null;
+    
+    @Transient
+    private List<AssociationMetadataTopic> listeAssociationMetadataTopic;
+    
+    @Transient
+    private List<AssociationMetadataTaxonomi> listeAssociationMetadataTaxonomi;
+
+    //Utils method
+    public void addListeAssociationMetadataTopic(AssociationMetadataTopic associationMetadataTopic) {
+        try {
+            this.listeAssociationMetadataTopic.add(associationMetadataTopic);
+        } catch (NullPointerException e) {
+            this.listeAssociationMetadataTopic = new ArrayList<>();
+            this.listeAssociationMetadataTopic.add(associationMetadataTopic);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void addListeAssociationMetadataTaxonomi(AssociationMetadataTaxonomi associationMetadataTaxonomi) {
+        try {
+            this.listeAssociationMetadataTaxonomi.add(associationMetadataTaxonomi);
+        } catch (NullPointerException e) {
+            this.listeAssociationMetadataTaxonomi = new ArrayList<>();
+            this.listeAssociationMetadataTaxonomi.add(associationMetadataTaxonomi);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	public String getUrl() {
 		return url;

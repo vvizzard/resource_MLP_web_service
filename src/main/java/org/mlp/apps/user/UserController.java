@@ -1,6 +1,5 @@
 package org.mlp.apps.user;
 
-import java.util.HashMap;
 import java.util.List;
 import org.mlp.apps.usertype.UserType;
 import org.mlp.apps.usertype.UserTypeRepository;
@@ -8,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,7 +33,15 @@ public class UserController {
 	public List<User> getAllExperts() {
 		UserType exp = new UserType();
 		exp.setId(101); //101 is the id of expert
-		return userTypeRepository.findUser(exp);
+		List<User> valiny = userTypeRepository.findUser(exp);
+		for (User u : valiny) {
+			if (u.getPhotoProfil()==null || u.getPhotoProfil().isEmpty()) {
+				continue;
+			}
+			u.setPhotoProfil("https://www.lemursportal.org/forum/resources" 
+					+ u.getPhotoProfil());
+		}
+		return valiny;
 	}
 	
 //	@PostMapping("/authenticate")
